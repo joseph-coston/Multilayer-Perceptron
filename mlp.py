@@ -101,6 +101,18 @@ def main():
     net = NeuralNetwork([random_layer, Layer(2, 3, sigmoid)])
     print(net.evalute([1, 1, 1, 1, 1]))
 
+    # Example linear perceptron describing the line (x + y > 0)
+    s1 = Neuron([1, 1], lambda x: x > 0, 0)
+    print(s1.evaluate((0, 0)))
+    print(s1.evaluate((0, 1)))
+    print(s1.evaluate((0, -1)))
+
+    # Example linear perception describing the line (2x + y + 0.5 > 0)
+    s2 = Neuron([2, 1], lambda x: x > 0, 0.5)
+    print(s2.evaluate((0, 0)))
+    print(s2.evaluate((0, 1)))
+    print(s2.evaluate((0, -1)))
+
 
 if __name__ == "__main__":
     main()
