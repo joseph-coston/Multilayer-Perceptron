@@ -12,7 +12,7 @@ class Neuron:
     weights: List[float]
     sigmoid: Callable
 
-    def __init__(self, inputs, sigmoid=None, bias=None) -> None:
+    def __init__(self, inputs, sigmoid=sigmoid, bias=None) -> None:
         """Creates a new neuron
 
         Args:
