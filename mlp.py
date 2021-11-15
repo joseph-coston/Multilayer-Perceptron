@@ -22,10 +22,11 @@ class Neuron:
 
             bias (float, optional): This neuron's bias defaults to a random value (-1, 1).
         """
-
+        # assign random biases
         if bias is None:
             bias = random.uniform(-1, 1)
 
+        # either choose n random weights or load input weights provided
         if isinstance(inputs, int):
             self.weights = [random.uniform(-1.0, 1.0)
                             for i in range(inputs)]

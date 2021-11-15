@@ -33,6 +33,7 @@ class pointCloud2D():
         plt.legend()
 
         ax.set_aspect('equal', adjustable='box')
+        return fig, ax
 
     def __init__(self, f, n=1000) -> None:
         self.data = self.generate(f,n)
