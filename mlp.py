@@ -4,6 +4,7 @@
 
 import math
 import random
+import numpy as np
 from typing import Callable, List
 
 
@@ -54,6 +55,19 @@ class Neuron:
             return total
 
         return self.sigmoid(total)
+
+    def get_matrix(self, dim=500, scale=1):
+        # generate an array to hold the output space of the perceptron
+        op_space = [np.zeros(dim)]*dim
+
+        # loop over inputs from -dim/2 to +dim/2 in two dimensions, storing the outputs of perceptron
+        for i in range(dim):
+            tmp = np.zeros(dim)
+            for j in range(dim):
+                tmp[j] = self.evaluate([(i-dim/2)*scale,(j-dim/2)*scale])
+            op_space[i] = tmp.copy()
+
+        return op_space
 
 
 class Layer:
