@@ -56,7 +56,7 @@ class Neuron:
 
         return self.sigmoid(total)
 
-    def get_matrix(self, dim=500):
+    def get_matrix(self, dim=500, scale=1):
         # generate an array to hold the output space of the perceptron
         op_space = [np.zeros(dim)]*dim
 
@@ -64,7 +64,7 @@ class Neuron:
         for i in range(dim):
             tmp = np.zeros(dim)
             for j in range(dim):
-                tmp[j] = self.evaluate([i-dim/2,j-dim/2])
+                tmp[j] = self.evaluate([(i-dim/2)*scale,(j-dim/2)*scale])
             op_space[i] = tmp.copy()
 
         return op_space
