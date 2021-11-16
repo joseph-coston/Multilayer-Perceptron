@@ -59,7 +59,7 @@ class Neuron:
 class Layer:
     neurons: List[Neuron]
 
-    def __init__(self, neurons, input_size=None, sigmoid=None) -> None:
+    def __init__(self, neurons, input_size=None, sigmoid=None, weight_range=(-1, 1)) -> None:
         """Creates a new neuron layer
 
         Args:
@@ -68,12 +68,14 @@ class Layer:
             input_size (int): How many inputs every neuron has. Required if neurons is an int
 
             sigmoid (function): Function to run on the sum of all inputs to neurons. Required if neurons is an int
+
+            weight_range (tuple, optional): The minimum and maximum random connection/bias weights
         """
 
         if isinstance(neurons, list):
             self.neurons = neurons
         else:
-            self.neurons = [Neuron(input_size, sigmoid)
+            self.neurons = [Neuron(input_size, sigmoid, weight_range=weight_range)
                             for n in range(neurons)]
 
     def evalute(self, inputs: List[float]) -> List[float]:
