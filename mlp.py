@@ -1,3 +1,7 @@
+# Classes for building and running a neural network
+# MLP Project - CSE489
+# Joseph Coston & Douglas Newquist
+
 import math
 import random
 from typing import Callable, List
@@ -12,29 +16,33 @@ class Neuron:
     weights: List[float]
     sigmoid: Callable
 
-    def __init__(self, inputs, sigmoid=sigmoid, bias=None) -> None:
+    def __init__(self, inputs, sigmoid=sigmoid, bias=None, weight_range=(-1, 1)) -> None:
         """Creates a new neuron
 
         Args:
             inputs (int or list of floats): How many input connections this neuron has, if an int each weight is randomized in the range (-1, 1).
 
-            sigmoid (function): Function to run on the sum of all inputs to this neuron.
+            sigmoid (function, optional): Function to run on the sum of all inputs to this neuron.
 
             bias (float, optional): This neuron's bias defaults to a random value (-1, 1).
+
+            weight_range (tuple, optional): The minimum and maximum random connection/bias weights
         """
-        # assign random biases
+        # assign neuron bias
         if bias is None:
-            bias = random.uniform(-1, 1)
+            # pick a random bias
+            self.bias = random.uniform(*weight_range)
+        else:
+            self.bias = bias
 
         # either choose n random weights or load input weights provided
         if isinstance(inputs, int):
-            self.weights = [random.uniform(-1.0, 1.0)
+            self.weights = [random.uniform(*weight_range)
                             for i in range(inputs)]
         else:
             self.weights = inputs
 
         self.sigmoid = sigmoid
-        self.bias = bias
 
     def evaluate(self, inputs: List[float]) -> float:
         total = self.bias
