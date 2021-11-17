@@ -17,6 +17,14 @@ class Neuron:
     weights: List[float]
     sigmoid: Callable
 
+    @property
+    def output_size(self):
+        return 1
+
+    @property
+    def input_size(self):
+        return len(self.weights)
+
     def __init__(self, inputs, sigmoid=sigmoid, bias=None, weight_range=(-1, 1)) -> None:
         """Creates a new neuron
 
@@ -73,6 +81,17 @@ class Neuron:
 class Layer:
     neurons: List[Neuron]
 
+    @property
+    def input_size(self):
+        if len(self.neurons) == 0:
+            return 0
+
+        return self.neurons[0].input_size
+
+    @property
+    def output_size(self):
+        return len(self.neurons)
+
     def __init__(self, neurons, input_size=None, sigmoid=sigmoid, weight_range=(-1, 1)) -> None:
         """Creates a new neuron layer
 
@@ -98,6 +117,20 @@ class Layer:
 
 class NeuralNetwork:
     layers: List[Layer] = []
+
+    @property
+    def input_size(self):
+        if len(self.layers) == 0:
+            return 0
+
+        return self.layers[0].input_size
+
+    @property
+    def output_size(self):
+        if len(self.layers) == 0:
+            return 0
+
+        return self.layers[-1].output_size
 
     def __init__(self, layers: list, sigmoid=sigmoid, weight_range=(-1, 1)) -> None:
         """Creates a new neural network
@@ -156,6 +189,7 @@ def main():
     # Example neural network with 3 inputs, 2 hidden layers of sizes 3 and 5, with 7 outputs
     net = NeuralNetwork([3, 3, 5, 7])
     print(net.evalute([1, 1, 1]))
+    print(net.output_size)
 
 
 if __name__ == "__main__":
