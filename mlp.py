@@ -64,7 +64,7 @@ class Neuron:
         for i in range(dim):
             tmp = np.zeros(dim)
             for j in range(dim):
-                tmp[j] = self.evaluate([(i-dim/2)*scale,(j-dim/2)*scale])
+                tmp[j] = self.evaluate([(i-dim/2)*scale, (j-dim/2)*scale])
             op_space[i] = tmp.copy()
 
         return op_space
@@ -73,7 +73,7 @@ class Neuron:
 class Layer:
     neurons: List[Neuron]
 
-    def __init__(self, neurons, input_size=None, sigmoid=None, weight_range=(-1, 1)) -> None:
+    def __init__(self, neurons, input_size=None, sigmoid=sigmoid, weight_range=(-1, 1)) -> None:
         """Creates a new neuron layer
 
         Args:
@@ -97,10 +97,25 @@ class Layer:
 
 
 class NeuralNetwork:
-    layers: List[Layer]
+    layers: List[Layer] = []
 
-    def __init__(self, layers: List[Layer]) -> None:
-        self.layers = layers
+    def __init__(self, layers: list, sigmoid=sigmoid, weight_range=(-1, 1)) -> None:
+        """Creates a new neural network
+
+        Args:
+            layers (list): Either a list of Layers or a list of integers of form [input count, layer size, ..., layer size, output count].
+
+            sigmoid (function): Function to run on the sum of all inputs to neurons.
+
+            weight_range (tuple, optional): The minimum and maximum random connection/bias weights
+        """
+
+        if len(layers) > 0 and isinstance(layers[0], int):
+            for input_size, size in zip(layers, layers[1:]):
+                self.layers.append(
+                    Layer(size, input_size, sigmoid, weight_range))
+        else:
+            self.layers = layers
 
     def evalute(self, inputs: List[float]) -> List[float]:
         for layer in self.layers:
@@ -137,6 +152,10 @@ def main():
     print(s2.evaluate((0, 0)))
     print(s2.evaluate((0, 1)))
     print(s2.evaluate((0, -1)))
+
+    # Example neural network with 3 inputs, 2 hidden layers of sizes 3 and 5, with 7 outputs
+    net = NeuralNetwork([3, 3, 5, 7])
+    print(net.evalute([1, 1, 1]))
 
 
 if __name__ == "__main__":
