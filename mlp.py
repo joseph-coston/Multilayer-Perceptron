@@ -64,7 +64,7 @@ class Neuron:
 
         return self.sigmoid(total)
 
-    def get_matrix(self, dim=500, scale=1):
+    def get_matrix(self, dim=500, scale=1) -> List[List[float]]:
         # generate an array to hold the output space of the perceptron
         op_space = [np.zeros(dim)]*dim
 
@@ -113,6 +113,12 @@ class Layer:
 
     def evalute(self, inputs: List[float]) -> List[float]:
         return [neuron.evaluate(inputs) for neuron in self.neurons]
+
+    def get_matrix(self, dim=500, scale=1) -> List[List[float]]:
+        msum = [np.zeros(dim)]*dim
+        for neuron in self.neurons:
+            msum = np.add(neuron.get_matrix(dim, scale), np.add(msum, msum))
+        return msum
 
 
 class NeuralNetwork:
