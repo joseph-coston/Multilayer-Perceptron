@@ -114,10 +114,29 @@ class Layer:
     def evalute(self, inputs: List[float]) -> List[float]:
         return [neuron.evaluate(inputs) for neuron in self.neurons]
 
-    def get_matrix(self, dim=500, scale=1) -> List[List[float]]:
+    def get_matrix(self, dim=500, scale=1, mode='add') -> List[List[float]]:
+        '''
+            Function to return a matrix representative of the layer's output space.
+            Args:
+                dim (int): the size of the output array (centered on 0)
+                scale (double): the scale multiplier for changing range of array
+                mode (string): can be one of:
+                    'add'      - neuron matrices are simply summed together
+                    'gradient' - neuron matrices are added to twice the previous matrix to create a gradient
+                    'flatten'  - neuron matrices are added but sum is capped at 1
+        '''
         msum = [np.zeros(dim)]*dim
+        if mode=='flatten':
+            msum = self.neurons[0].get_matrix(dim, scale)
         for neuron in self.neurons:
-            msum = np.add(neuron.get_matrix(dim, scale), np.add(msum, msum))
+            if mode=='add':
+                msum = np.add(neuron.get_matrix(dim, scale), msum)
+            elif mode=='gradient':
+                msum = np.add(neuron.get_matrix(dim, scale), np.add(msum, msum))
+            elif mode=='flatten':
+                msum = np.add(neuron.get_matrix(dim, scale), msum)
+                msum = np.where(msum!=np.amax(msum), 0, msum)
+                msum = np.where(msum==np.amax(msum), 1, msum)
         return msum
 
 
