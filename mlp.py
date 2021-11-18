@@ -111,7 +111,7 @@ class Layer:
             self.neurons = [Neuron(input_size, sigmoid, weight_range=weight_range)
                             for n in range(neurons)]
 
-    def evalute(self, inputs: List[float]) -> List[float]:
+    def evaluate(self, inputs: List[float]) -> List[float]:
         return [neuron.evaluate(inputs) for neuron in self.neurons]
 
     def get_matrix(self, dim=500, scale=1, mode='add') -> List[List[float]]:
@@ -126,17 +126,18 @@ class Layer:
                     'flatten'  - neuron matrices are added but sum is capped at 1
         '''
         msum = [np.zeros(dim)]*dim
-        if mode=='flatten':
+        if mode == 'flatten':
             msum = self.neurons[0].get_matrix(dim, scale)
         for neuron in self.neurons:
-            if mode=='add':
+            if mode == 'add':
                 msum = np.add(neuron.get_matrix(dim, scale), msum)
-            elif mode=='gradient':
-                msum = np.add(neuron.get_matrix(dim, scale), np.add(msum, msum))
-            elif mode=='flatten':
+            elif mode == 'gradient':
+                msum = np.add(neuron.get_matrix(
+                    dim, scale), np.add(msum, msum))
+            elif mode == 'flatten':
                 msum = np.add(neuron.get_matrix(dim, scale), msum)
-                msum = np.where(msum!=np.amax(msum), 0, msum)
-                msum = np.where(msum==np.amax(msum), 1, msum)
+                msum = np.where(msum != np.amax(msum), 0, msum)
+                msum = np.where(msum == np.amax(msum), 1, msum)
         return msum
 
 
@@ -175,9 +176,9 @@ class NeuralNetwork:
         else:
             self.layers = layers
 
-    def evalute(self, inputs: List[float]) -> List[float]:
+    def evaluate(self, inputs: List[float]) -> List[float]:
         for layer in self.layers:
-            inputs = layer.evalute(inputs)
+            inputs = layer.evaluate(inputs)
 
         return inputs
 
@@ -189,15 +190,15 @@ def main():
 
     # Example neuron layer with 2 existing neurons with 5 inputs
     layer = Layer([a, a])
-    print(layer.evalute([1, 1, 1, 1, 1]))
+    print(layer.evaluate([1, 1, 1, 1, 1]))
 
     # Example random neuron layer with 3 random neurons with 5 inputs
     random_layer = Layer(3, 5, sigmoid)
-    print(random_layer.evalute([1, 1, 1, 1, 1]))
+    print(random_layer.evaluate([1, 1, 1, 1, 1]))
 
     # Example neural network with 2 layers
     net = NeuralNetwork([random_layer, Layer(2, 3, sigmoid)])
-    print(net.evalute([1, 1, 1, 1, 1]))
+    print(net.evaluate([1, 1, 1, 1, 1]))
 
     # Example linear perceptron describing the line (x + y > 0)
     s1 = Neuron([1, 1], lambda x: x > 0, 0)
@@ -213,7 +214,7 @@ def main():
 
     # Example neural network with 3 inputs, 2 hidden layers of sizes 3 and 5, with 7 outputs
     net = NeuralNetwork([3, 3, 5, 7])
-    print(net.evalute([1, 1, 1]))
+    print(net.evaluate([1, 1, 1]))
     print(net.output_size)
 
 
