@@ -5,7 +5,8 @@
 import math
 import random
 import numpy as np
-from typing import Callable, List
+import pandas as pd
+from typing import Callable, Iterable, List
 
 
 def sigmoid(x):
@@ -176,9 +177,27 @@ class NeuralNetwork:
         else:
             self.layers = layers
 
-    def evaluate(self, inputs: List[float]) -> List[float]:
+    def evaluate(self, inputs: List[float], verbose=False) -> List[float]:
+        # If in verbose create a list of layer outputs
+        if verbose:
+            layer_outputs = [inputs]
+
         for layer in self.layers:
             inputs = layer.evaluate(inputs)
+
+            # Ensure output of the layer is a list
+            if not isinstance(inputs, Iterable):
+                inputs = [inputs]
+
+            # Append this layer's output
+            if verbose:
+                layer_outputs.append(inputs)
+
+        if verbose:
+            layer_outputs = pd.DataFrame(layer_outputs).transpose()
+            layer_outputs.columns = [
+                "Input"] + [f"Layer {i}" for i in range(len(self.layers) - 1)] + ["Output"]
+            return layer_outputs
 
         return inputs
 
