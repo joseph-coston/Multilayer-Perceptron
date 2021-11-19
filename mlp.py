@@ -177,7 +177,7 @@ class NeuralNetwork:
         else:
             self.layers = layers
 
-    def evaluate(self, inputs: List[float], verbose=False) -> List[float]:
+    def evaluate(self, inputs: List[float], verbose=False):
         # If in verbose create a list of layer outputs
         if verbose:
             layer_outputs = [inputs]
