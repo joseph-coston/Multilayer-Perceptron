@@ -73,7 +73,7 @@ class Neuron:
         for i in range(dim):
             tmp = np.zeros(dim)
             for j in range(dim):
-                tmp[j] = self.evaluate([ (i-dim/2)*scale, (j-dim/2)*scale ])
+                tmp[j] = self.evaluate([(i-dim/2)*scale, (j-dim/2)*scale])
             op_space[i] = tmp.copy()
 
         return op_space
@@ -197,8 +197,8 @@ class NeuralNetwork:
             layer_outputs = pd.DataFrame(layer_outputs).transpose()
             layer_outputs.columns = [
                 "Input"] + [f"Layer {i}" for i in range(len(self.layers) - 1)] + ["Output"]
-            return layer_outputs
- 
+            return layer_outputs.fillna('')
+
         return inputs
 
     def get_matrix(self, dim=500, scale=1) -> List[List[float]]:
@@ -214,7 +214,7 @@ class NeuralNetwork:
         for i in range(dim):
             tmp = np.zeros(dim)
             for j in range(dim):
-                tmp[j] = self.evaluate([ (i-dim/2)*scale, (j-dim/2)*scale ])[0]+0
+                tmp[j] = self.evaluate([(i-dim/2)*scale, (j-dim/2)*scale])[0]+0
             op_space[i] = tmp.copy()
         return op_space
 
