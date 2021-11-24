@@ -73,7 +73,7 @@ class Neuron:
         for i in range(dim):
             tmp = np.zeros(dim)
             for j in range(dim):
-                tmp[j] = self.evaluate([(i-dim/2)*scale, (j-dim/2)*scale])
+                tmp[j] = self.evaluate([ (i-dim/2)*scale, (j-dim/2)*scale ])
             op_space[i] = tmp.copy()
 
         return op_space
@@ -198,8 +198,25 @@ class NeuralNetwork:
             layer_outputs.columns = [
                 "Input"] + [f"Layer {i}" for i in range(len(self.layers) - 1)] + ["Output"]
             return layer_outputs
-
+ 
         return inputs
+
+    def get_matrix(self, dim=500, scale=1) -> List[List[float]]:
+        '''
+            Function to return a matrix representative of the neural network's output space.
+            Args:
+                dim (int): the size of the output array (centered on 0)
+                scale (double): the scale multiplier for changing range of array
+        '''
+        op_space = [np.zeros(dim)]*dim
+
+        # loop over inputs from -dim/2 to +dim/2 in two dimensions, storing the outputs of the NN
+        for i in range(dim):
+            tmp = np.zeros(dim)
+            for j in range(dim):
+                tmp[j] = self.evaluate([ (i-dim/2)*scale, (j-dim/2)*scale ])[0]+0
+            op_space[i] = tmp.copy()
+        return op_space
 
 
 def main():
