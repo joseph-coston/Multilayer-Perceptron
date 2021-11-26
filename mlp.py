@@ -219,7 +219,8 @@ class NeuralNetwork:
         for i in range(dim):
             tmp = np.zeros(dim)
             for j in range(dim):
-                tmp[j] = self.evaluate([(i-dim/2)*scale, (j-dim/2)*scale])[0]+0
+                for output in self.evaluate([(i-dim/2)*scale, (j-dim/2)*scale]):
+                    tmp[j] += output+0
             op_space[i] = tmp.copy()
         return op_space
 
