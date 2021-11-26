@@ -159,6 +159,11 @@ class NeuralNetwork:
 
         return self.layers[-1].output_size
 
+    @property
+    def parent(self):
+        """Gets a copy of this neural network excluding the last layer"""
+        return NeuralNetwork(self.layers[:-1])
+
     def __init__(self, layers: list, sigmoid=sigmoid, weight_range=(-1, 1)) -> None:
         """Creates a new neural network
 
