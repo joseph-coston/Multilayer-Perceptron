@@ -65,7 +65,7 @@ class Neuron:
 
         return self.sigmoid(total)
 
-    def get_matrix(self, dim=500, scale=1) -> List[List[float]]:
+    def get_matrix(self, dim=500, scale=1, offset=(0,0)) -> List[List[float]]:
         # generate an array to hold the output space of the perceptron
         op_space = [np.zeros(dim)]*dim
 
@@ -73,7 +73,7 @@ class Neuron:
         for i in range(dim):
             tmp = np.zeros(dim)
             for j in range(dim):
-                tmp[j] = self.evaluate([(i-dim/2)*scale, (j-dim/2)*scale])
+                tmp[j] = self.evaluate([(i-dim/2)*scale+offset[0], (j-dim/2)*scale+offset[1]])
             op_space[i] = tmp.copy()
 
         return op_space
@@ -215,7 +215,7 @@ class NeuralNetwork:
 
         return inputs
 
-    def get_matrix(self, dim=500, scale=1) -> List[List[float]]:
+    def get_matrix(self, dim=500, scale=1, offset=(0,0)) -> List[List[float]]:
         '''
             Function to return a matrix representative of the neural network's output space.
             Args:
@@ -228,7 +228,7 @@ class NeuralNetwork:
         for i in range(dim):
             tmp = np.zeros(dim)
             for j in range(dim):
-                for output in self.evaluate([(i-dim/2)*scale, (j-dim/2)*scale]):
+                for output in self.evaluate([(i-dim/2)*scale+offset[0], (j-dim/2)*scale+offset[1]]):
                     tmp[j] += output+0
             op_space[i] = tmp.copy()
         return op_space
